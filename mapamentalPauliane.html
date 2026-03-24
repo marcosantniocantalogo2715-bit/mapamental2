@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Mapa Mental: Estruturas & Big Data</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #fff;
+    background: #010101;
+    overflow-x: hidden;
+}
+
+/* FUNDO PARTÍCULAS */
+body::before {
+    content: "";
+    position: fixed;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.08) 1.2px, transparent 1px);
+    background-size: 50px 50px;
+    animation: moveBg 30s linear infinite;
+    z-index: 0;
+    pointer-events: none;
+}
+
+@keyframes moveBg {
+    100% { transform: translate(-250px,-250px); }
+}
+
+/* HOME */
+.home {
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+.home h1 {
+    font-size: 2.8em;
+    margin-bottom: 50px;
+    text-align: center;
+    text-shadow: 0 0 15px rgba(255,255,255,0.3);
+}
+
+.topics-container {
+    display: flex;
+    gap: 40px;
+}
+
+.topic {
+    padding: 40px 60px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 1.4em;
+    background: rgba(255,255,255,0.03);
+    backdrop-filter: blur(5px);
+    transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-align: center;
+}
+
+.topic:hover {
+    transform: translateY(-10px);
+    background: rgba(255,255,255,0.08);
+}
+
+.btn-estruturas {
+    border: 2px solid #00f5ff;
+    color: #00f5ff;
+    box-shadow: inset 0 0 10px rgba(0, 245, 255, 0.2);
+}
+
+.btn-bigdata {
+    border: 2px solid #ff00ff;
+    color: #ff00ff;
+    box-shadow: inset 0 0 10px rgba(255, 0, 255, 0.2);
+}
+
+/* PÁGINAS */
+.page {
+    display: none;
+    padding: 50px 20px;
+    animation: fade 0.6s ease;
+    position: relative;
+    z-index: 1;
+}
+
+@keyframes fade {
+    from {opacity:0; transform: scale(0.95);}
+    to {opacity:1; transform: scale(1);}
+}
+
+.page-content {
+    max-width: 900px;
+    margin: auto;
+}
+
+/* BOTÃO VOLTAR */
+.back-btn {
+    margin-bottom: 30px;
+    padding: 12px 25px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.back-btn:hover {
+    background: rgba(255,255,255,0.15);
+}
+
+/* NÓS */
+.node {
+    margin: 15px 0;
+    cursor: pointer;
+}
+
+.node-title {
+    padding: 18px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.05);
+    transition: 0.3s;
+    font-weight: 600;
+}
+
+/* NEON COLORS */
+#estruturas .node-title {
+    border-left: 5px solid #00f5ff;
+}
+
+#bigdata .node-title {
+    border-left: 5px solid #ff00ff;
+}
+
+.node-title:hover {
+    background: rgba(255,255,255,0.1);
+    transform: translateX(8px);
+}
+
+/* RAMIFICAÇÃO */
+.children {
+    margin-left: 20px;
+    border-left: 1px dashed rgba(255,255,255,0.2);
+    padding-left: 20px;
+    max-height: 0;
+    overflow: hidden;
+    transition: 0.5s cubic-bezier(0, 1, 0, 1);
+}
+
+/* CONTEÚDO EXPANDIDO */
+.content {
+    padding: 10px 0 20px 5px;
+    color: #bbb;
+    line-height: 1.6;
+    font-size: 0.95em;
+}
+
+b { color: #fff; }
+
+/* LOGO */
+.logo-canto {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    width: 60px;
+    opacity: 0.5;
+    animation: pulseLogo 3s infinite;
+}
+
+@keyframes pulseLogo {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 0.9; }
+}
+
+@media(max-width: 800px) {
+    .topics-container { flex-direction: column; }
+    .home h1 { font-size: 1.8em; }
+}
+</style>
+</head>
+
+<body>
+
+<div id="home" class="home">
+    <h1>Mapa Mental: Estruturas & Big Data</h1>
+    <div class="topics-container">
+        <div class="topic btn-estruturas" onclick="enterPage('estruturas')">
+            🧱 Estruturas de Dados
+        </div>
+        <div class="topic btn-bigdata" onclick="enterPage('bigdata')">
+            📊 Big Data
+        </div>
+    </div>
+</div>
+
+<div id="estruturas" class="page">
+    <div class="page-content">
+        <button class="back-btn" onclick="backHome()">← Voltar ao Início</button>
+        <h2 style="color:#00f5ff; margin-bottom: 30px;">Estruturas de Dados</h2>
+
+        <div class="node" onclick="toggle(this)">
+            <div class="node-title">Tipos Lineares</div>
+            <div class="children">
+                <div class="node">
+                    <div class="node-title">Arrays (Vetores)</div>
+                    <div class="content"><b>Acesso:</b> O(1). <b>Definição:</b> Coleção de elementos adjacentes na memória. Ideal para listas de tamanho fixo onde a leitura rápida é prioridade.</div>
+                </div>
+                <div class="node">
+                    <div class="node-title">Listas Ligadas</div>
+                    <div class="content"><b>Inserção:</b> Rápida (apenas muda ponteiros). <b>Definição:</b> Cada elemento (nó) conhece o próximo. Ótima para alocação dinâmica de memória.</div>
+                </div>
+                <div class="node">
+                    <div class="node-title">Pilhas (LIFO)</div>
+                    <div class="content"><b>LIFO:</b> Last-In, First-Out. <b>Uso:</b> Desfazer ações (Ctrl+Z), histórico de navegação e chamadas de funções recursivas.</div>
+                </div>
+                <div class="node">
+                    <div class="node-title">Filas (FIFO)</div>
+                    <div class="content"><b>FIFO:</b> First-In, First-Out. <b>Uso:</b> Escalonamento de processos, filas de impressão e buffers de transmissão de dados.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="node" onclick="toggle(this)">
+            <div class="node-title">Tipos Não Lineares</div>
+            <div class="children">
+                <div class="node">
+                    <div class="node-title">Árvores (Trees)</div>
+                    <div class="content"><b>Hierarquia:</b> Estruturas como <b>Binary Search Trees</b> organizam dados para buscas rápidas. Usadas em sistemas de arquivos e índices de bancos de dados SQL.</div>
+                </div>
+                <div class="node">
+                    <div class="node-title">Grafos</div>
+                    <div class="content"><b>Conexões:</b> Conjunto de vértices e arestas. Essenciais para representar redes sociais, mapas (Google Maps) e sistemas de recomendação.</div>
+                </div>
+                <div class="node">
+                    <div class="node-title">Hash Tables (Mapas)</div>
+                    <div class="content"><b>Velocidade:</b> Busca, inserção e remoção tendem a O(1). Associa uma chave a um valor através de uma função hash. Base de dicionários em Python e objetos JSON.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="bigdata" class="page">
+    <div class="page-content">
+        <button class="back-btn" onclick="backHome()">← Voltar ao Início</button>
+        <h2 style="color:#ff00ff; margin-bottom: 30px;">Conceitos de Big Data</h2>
+
+        <div class="node" onclick="toggle(this)">
+            <div class="node-title">Os 5 Vs Fundamentais</div>
+            <div class="children">
+                <div class="node">
+                    <div class="node-title">Volume & Velocidade</div>
+                    <div class="content"><b>Volume:</b> Petabytes de dados gerados diariamente. <b>Velocidade:</b> Necessidade de análise em frações de segundo (fraudes bancárias).</div>
+                </div>
+                <div class="node">
+                    <div class="node-title">Variedade & Veracidade</div>
+                    <div class="content"><b>Variedade:</b> Dados estruturados (SQL), semi (JSON) e não estruturados (Vídeos). <b>Veracidade:</b> Limpeza de ruídos e dados falsos.</div>
+                </div>
+                <div class="node">
+                    <div class="node-title">Valor</div>
+                    <div class="content"><b>O Objetivo Final:</b> Transformar dados brutos em inteligência de negócio e lucro. Sem valor, o Big Data é apenas um custo de armazenamento.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="node" onclick="toggle(this)">
+            <div class="node-title">Arquiteturas de Processamento</div>
+            <div class="children">
+                <div class="node">
+                    <div class="node-title">Processamento em Batch (Lote)</div>
+                    <div class="content">Grandes volumes processados de uma vez (ex: Hadoop MapReduce). Geralmente executado em janelas de tempo (ex: toda madrugada).</div>
+                </div>
+                <div class="node">
+                    <div class="node-title">Streaming (Tempo Real)</div>
+                    <div class="content">Dados processados instantaneamente conforme chegam (ex: Apache Flink, Spark Streaming). Crucial para monitoramento e IOT.</div>
+                </div>
+                <div class="node">
+                    <div class="node-title">Arquitetura Lambda</div>
+                    <div class="content">O "Melhor dos dois mundos": Mantém uma camada de Batch para precisão histórica e uma camada Speed para resultados imediatos.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<img src="https://cdn-icons-png.flaticon.com/512/2103/2103633.png" class="logo-canto" onerror="this.src='https://via.placeholder.com/70'">
+
+<script>
+function enterPage(id){
+    document.getElementById('home').style.display = 'none';
+    document.getElementById(id).style.display = 'block';
+    window.scrollTo(0,0);
+}
+
+function backHome(){
+    document.getElementById('home').style.display = 'flex';
+    document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+}
+
+function toggle(el){
+    // Previne que o clique no conteúdo feche o nó
+    event.stopPropagation();
+    
+    let children = el.querySelector('.children');
+    if(children){
+        if(children.style.maxHeight && children.style.maxHeight !== "0px"){
+            children.style.maxHeight = "0px";
+        } else {
+            children.style.maxHeight = children.scrollHeight + "px";
+        }
+    }
+}
+</script>
+
+</body>
+</html>
